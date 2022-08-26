@@ -1,5 +1,6 @@
 import * as cdk from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
+import { NodejsFunction } from "@aws-cdk/aws-lambda-nodejs";
 import * as apigw from "@aws-cdk/aws-apigatewayv2";
 import {
   HttpLambdaIntegration,
@@ -7,6 +8,7 @@ import {
 } from "@aws-cdk/aws-apigatewayv2-integrations";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as s3Deploy from "@aws-cdk/aws-s3-deployment";
+import { CfnOutput } from "@aws-cdk/core";
 
 export class LearningStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -15,10 +17,12 @@ export class LearningStack extends cdk.Stack {
     const httpApi = new apigw.HttpApi(this, "JackRoseLearningHttpApi");
 
     // setup and deploy and simple lambda
-    const hello = new lambda.Function(this, "HelloHandler", {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromAsset("lambda"),
-      handler: "hello.handler",
+    const hello = new NodejsFunction(this, "HelloHandler", {
+      memorySize: 256,
+      timeout: cdk.Duration.seconds(10),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: "main",
+      entry: "lambda/hello.ts",
     });
     const helloFnIntegration = new HttpLambdaIntegration(
       "HelloFnIntegration",
@@ -49,6 +53,11 @@ export class LearningStack extends cdk.Stack {
       path: "/",
       methods: [apigw.HttpMethod.GET],
       integration: bucketIntegration,
+    });
+
+    // convenience: log the url of this endpoint
+    new CfnOutput(this, "apiEndpoint", {
+      value: httpApi.apiEndpoint,
     });
   }
 }

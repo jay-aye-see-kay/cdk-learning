@@ -9,9 +9,9 @@ This repo was setup by copying files from a previous experiment with CDK and cha
 
 ** Ideas and progress
 - [X] deploy a hello world lambda behind an api gateway
-- [ ] serve a static file
+- [X] serve a static file
 - [ ] do something with a dyanmo table
-- [ ] write lambdas with TS and deploy as JS
+- [X] write lambdas with TS and deploy as JS
 - [ ] involve a cloudfront distribution
 - [ ] do something with more complex routing and understand the routing syntax
 
