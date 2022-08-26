@@ -1,0 +1,17 @@
+* Repo to experiment and learn about AWS CDK
+This repo used ~aws-cdk~ version 1 because that's what we use at Culture Amp for now.
+
+This repo was setup by copying files from a previous experiment with CDK and changing some of the variable and file name rather than setting it up using the `cdk init` command. This forced me to understand what stuff does a bit better but this project might not have conventional naming and structure because of that.
+
+** Resources
+- [[https://cultureamp.atlassian.net/wiki/spaces/SEC/pages/2744649490/AWS+SSO+Okta+-+User+Guides][Culture Amp internal AWS setup page]]
+- [[https://cdkworkshop.com/20-typescript.html][AWS cdk workshop]] (uses cdk v2 but still useful reference for basics)
+
+** Ideas and progress
+- [X] deploy a hello world lambda behind an api gateway
+- [ ] serve a static file
+- [ ] do something with a dyanmo table
+- [ ] write lambdas with TS and deploy as JS
+- [ ] involve a cloudfront distribution
+- [ ] do something with more complex routing and understand the routing syntax
+
