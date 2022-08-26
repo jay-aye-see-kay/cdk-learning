@@ -24,14 +24,10 @@ export class LearningStack extends cdk.Stack {
       handler: "main",
       entry: "lambda/hello.ts",
     });
-    const helloFnIntegration = new HttpLambdaIntegration(
-      "HelloFnIntegration",
-      hello
-    );
     httpApi.addRoutes({
       path: "/hello",
       methods: [apigw.HttpMethod.GET],
-      integration: helloFnIntegration,
+      integration: new HttpLambdaIntegration("HelloFnIntegration", hello),
     });
 
     // create a bucket, sync its files with local `static` directory, then point a route to `index.html`
