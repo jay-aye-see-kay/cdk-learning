@@ -45,15 +45,32 @@ export class LearningStack extends cdk.Stack {
       sources: [s3Deploy.Source.asset("./static")],
       destinationBucket: bucket,
     });
-    const bucketIntegration = new HttpUrlIntegration(
-      "BucketIntegration",
-      bucket.urlForObject("index.html")
-    );
+    httpApi.addRoutes({
+      path: "/index",
+      methods: [apigw.HttpMethod.GET],
+      integration: new HttpUrlIntegration(
+        "BucketIntegration",
+        bucket.urlForObject("index.html")
+      ),
+    });
+
+    // deploy a lambda that routes dynamically
+    const router = new NodejsFunction(this, "RouterHandler", {
+      memorySize: 256,
+      timeout: cdk.Duration.seconds(10),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: "main",
+      entry: "lambda/router.ts",
+      environment: {
+        BUCKET_NAME: bucket.bucketName,
+      },
+    });
     httpApi.addRoutes({
       path: "/",
       methods: [apigw.HttpMethod.GET],
-      integration: bucketIntegration,
+      integration: new HttpLambdaIntegration("RouterFnIntegration", router),
     });
+    bucket.grantRead(router);
 
     // convenience: log the url of this endpoint
     new CfnOutput(this, "apiEndpoint", {

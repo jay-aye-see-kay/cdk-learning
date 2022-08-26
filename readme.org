@@ -13,5 +13,5 @@ This repo was setup by copying files from a previous experiment with CDK and cha
 - [ ] do something with a dyanmo table
 - [X] write lambdas with TS and deploy as JS
 - [ ] involve a cloudfront distribution
-- [ ] do something with more complex routing and understand the routing syntax
+- [X] do something with more complex routing and understand the routing syntax
 
